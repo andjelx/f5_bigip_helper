@@ -10,5 +10,7 @@ six==1.10.0
 ```
 ## Execution
 
-``` python3 f5_bigip_helper.py config.yml [clean] ```
+```
+python3 f5_bigip_helper.py config.yml [clean]
+```
 clean - will delete all objects cpecified in config
