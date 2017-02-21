@@ -4,74 +4,39 @@ partition:
 # Here goes Change reference to be placed into Description of created objects
 change: CHG00001 TEST
 
-# Below nodes to be created \ added as pool members
-nodes:
- node1:
-  address: 10.10.10.3
+# Put Virtual server config below
+vip:
+  name: FCV1NLP-www.fnac.nl-HTTP
+  destination: 192.168.0.100
   port: 80
-  # Put below 'y' - if node exists and just pool memeber need to be created
-  exists: n
-
-  # Pool member parameters
-  # https://devcentral.f5.com/wiki/iControlREST.APIRef_tm_ltm_pool_members.ashx
   params:
-    connectionLimit: 0
-    monitor: default
-    ratio: 1
-    priorityGroup: 0
-    session: user-enabled
-    state: user-up
- node2:
-  address: 10.10.10.4
-  port: 80
-  exists: n
-  params:
-    connectionLimit: 0
-    monitor: default
-    ratio: 1
-    priorityGroup: 0
-    session: user-enabled
-    state: user-up
+    ipProtocol: tcp
+    profiles:
+      - http
+      - /Common/wom-default-clientssl
+      - /Common/oneconnect
+    # iRules
+    rules:
+      - /Common/_sys_https_redirect
 
 # Put pool config here
-# https://devcentral.f5.com/wiki/iControlREST.APIRef_tm_ltm_pool.ashx
-
 pool:
- name: testpool1
- params:
-   # See "help pool" for a description of each loading balancing mode.
-   loadBalancingMode: round-robin
-   
-   # Specifies the minimum number of members that must be up for traffic to be confined to a priority group when using priority-based activation. The default value is 0 (zero). 
-   minActiveMembers: 1
-   
-   # Specifies the health monitors that the system uses to determine whether it can use this pool for load balancing. The monitor marks the pool up or down based on whether the monitor(s) are successful. You can specify a single monitor, multiple monitors "http and https", or a "min" rule, "min 1 of { http https }". You may remove the monitor by specifying "none".
-   monitor: gateway_icmp
+  params:
+    # See "help pool" for a description of each loading balancing mode.
+    loadBalancingMode: round-robin
+    # Specifies the health monitors that the system uses to determine whether it can use this pool for load balancing. The monitor marks the pool up or down based on whether the monitor(s) are successful. You can specify a single monitor, multiple monitors "http and https", or a "min" rule, "min 1 of { http https }". You may remove the monitor by specifying "none".
+    monitor: gateway_icmp
 
-# Put Virtual server config below
-# https://devcentral.f5.com/wiki/iControlREST.APIRef_tm_ltm_virtual.ashx
-vip:
- name: testvip1
- destination: 192.168.0.100
- port: 80
- params:
-   disabled: False
-   enabled: True
-   ipProtocol: tcp
-   translatePort: enabled
-   translateAddress: enabled
-   profiles:
-    - http
-   vlans:
-    - test-vlan01
-   rules:
-    - /Common/_sys_https_redirect
-   sourceAddressTranslation: 
-    type: automap
-   persist:
-    - name: universal
-      partition: Common
+# Below nodes to be created \ added as pool members
+nodes:
+  FCS1WPPPLFWEB1: # Node \ member name
+    address: 10.10.10.3
+    port: 80
+    # Put below 'y' - if node exists and just pool memeber need to be created
+    exists: n
+  FCS1WPPPLFWEB2:
+    address: 10.10.10.4
+    port: 80
+    exists: n
       
    
-
-

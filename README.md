@@ -11,6 +11,10 @@ six==1.10.0
 ## Execution
 
 ```
-python3 f5_bigip_helper.py config.yml [clean]
+python script.py [-b base_config.yml] config.yml [--clean]
 ```
 clean - will delete all objects cpecified in config
+config.yml parameters will be applied over base_config.yml if exists
+
+Change log:
+0.2 - Added split between baseconfig and user confing which applies on baseconfig parameters
