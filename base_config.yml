@@ -1,0 +1,46 @@
+# This config params willbe applied for all objects
+
+# Put Virtual server config below
+# https://devcentral.f5.com/wiki/iControlREST.APIRef_tm_ltm_virtual.ashx
+vip:
+ params:
+   disabled: False
+   enabled: True
+   ipProtocol: tcp
+   translatePort: enabled
+   translateAddress: enabled
+   profiles:
+    - http
+   vlans:
+    - test-vlan01
+   rules:
+    - /Common/_sys_https_redirect
+   sourceAddressTranslation: 
+    type: automap
+   persist:
+    - name: universal
+      partition: Common
+
+# Put pool config here
+# https://devcentral.f5.com/wiki/iControlREST.APIRef_tm_ltm_pool.ashx
+
+pool:
+ params:
+   # Specifies the minimum number of members that must be up for traffic to be confined to a priority group when using priority-based activation. The default value is 0 (zero). 
+   minActiveMembers: 1
+
+node:
+ params:
+    connectionLimit: 0
+    monitor: default
+    ratio: 1
+    priorityGroup: 0
+    session: user-enabled
+    state: user-up
+
+
+
+      
+   
+
+
