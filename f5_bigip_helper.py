@@ -19,6 +19,7 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import sys
 import yaml
 import argparse
+import getpass
 
 
 # Disable SSL warnings
@@ -50,10 +51,15 @@ def main():
         base_cfg = {}
 
     # Reload credentials from config
+    username = password = None
+    while not username and not password:
+        username = input('User name: ')
+        password = getpass.getpass('Password: ')
+
     cfg['bigip'] = {
           'ip': '192.168.1.245',
-          'user': 'restapi',
-          'password': 'password'
+          'user': username,
+          'password': password
     }
 
     partition = cfg['partition']['name']
