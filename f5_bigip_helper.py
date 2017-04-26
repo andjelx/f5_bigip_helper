@@ -10,7 +10,7 @@ config.yml parameters will be applied over base_config.yml if exists
 
 Tested with python >= 3.5
 Author: Andrey Zhelnin
-Version: 0.2
+Version: 0.3
 """
 
 from f5.bigip import BigIP
@@ -51,20 +51,13 @@ def main():
         base_cfg = {}
 
     # Reload credentials from config
-    username = password = None
-    while not username and not password:
-        username = input('User name: ')
+    password = cfg['bigip'].get('password', None)
+    while not password:
         password = getpass.getpass('Password: ')
-
-    cfg['bigip'] = {
-          'ip': '192.168.1.245',
-          'user': username,
-          'password': password
-    }
 
     partition = cfg['partition']['name']
     # Connect to the BigIP
-    bigip = BigIP(cfg['bigip']['ip'],cfg['bigip']['user'],cfg['bigip']['password'])
+    bigip = BigIP(cfg['bigip']['ip'],cfg['bigip']['user'], password)
 
     # Create a new vip
     def create_vip(**kwargs):
